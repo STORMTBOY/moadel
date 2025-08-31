@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: gpa-bot
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python bot.py
+    envVars:
+      - key: BOT_TOKEN
+        value: "8231366001:AAEU8GuHfddTJ-vzCOKZTQpjN3-BcIYT4RI"
