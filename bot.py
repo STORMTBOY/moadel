@@ -10,7 +10,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
     return ASK_NUM_COURSES
 
-# پرسش تعداد درس‌ها
 async def ask_num_courses(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
         num = int(update.message.text)
@@ -27,7 +26,6 @@ async def ask_num_courses(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("لطفا یک عدد معتبر وارد کن.")
         return ASK_NUM_COURSES
 
-# پرسش نمره درس
 async def ask_grade(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
         grade = float(update.message.text)
@@ -40,7 +38,6 @@ async def ask_grade(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("لطفا یک عدد معتبر بین 0 تا 20 وارد کن.")
         return ASK_GRADE
 
-# پرسش واحد درس
 async def ask_unit(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
         unit = float(update.message.text)
@@ -53,7 +50,6 @@ async def ask_unit(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("لطفا یک عدد معتبر وارد کن.")
         return ASK_UNIT
 
-# پرسش ضریب درس
 async def ask_coef(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
         coef = float(update.message.text)
@@ -70,22 +66,21 @@ async def ask_coef(update: Update, context: ContextTypes.DEFAULT_TYPE):
             total_weighted = sum([g * u * c for g, u, c in zip(context.user_data['grades'], context.user_data['units'], context.user_data['coefs'])])
             total_weight = sum([u * c for u, c in zip(context.user_data['units'], context.user_data['coefs'])])
             gpa = round(total_weighted / total_weight, 2)
-            msg = f"معدل شما: {gpa}\n"
+            # پیام نهایی
             if gpa < 12:
-                msg += "ریدی مشروط شدی که 😅"
+                result_msg = "ریدی مشروط شدی که 😅"
             elif 12 <= gpa <= 13:
-                msg += "از یه جایی آوردی نیوفتادیا 😏"
+                result_msg = "از یه جایی آوردی نیوفتادیا 😏"
             else:
-                msg += "آفرین خرخون قبول شدی درسخونعلی 🎉"
-            await update.message.reply_text(msg)
+                result_msg = "آفرین خرخون قبول شدی درسخونعلی 🎉"
+            await update.message.reply_text(f"معدل شما: {gpa}\n{result_msg}\n\nاگر دوباره خواستی معدلت رو حساب کنی، /start رو بزن!")
             return ConversationHandler.END
     except:
         await update.message.reply_text("لطفا یک عدد معتبر وارد کن.")
         return ASK_COEF
 
-# لغو گفتگو
 async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("لغو شد ✅")
+    await update.message.reply_text("لغو شد ✅\nاگر دوباره خواستی معدلت رو حساب کنی، /start رو بزن!")
     return ConversationHandler.END
 
 if __name__ == "__main__":
